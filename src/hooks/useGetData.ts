@@ -1,5 +1,5 @@
 import React  from "react";
-import { useQuery } from "react-query";
+import { useQuery } from 'react-query';
 import utils from "../lib/utils"
 import { get } from "../lib/data";
 
