@@ -22,10 +22,19 @@ const getHeaders = () => {
     "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Origin": "*",
   };
+  
+  // Try to get Cognito token from localStorage
   const user = localStorage.getItem("user");
-  if (user !== "undefined") {
-    const jwtToken = JSON.parse(user as string);
-    headers["x-access-token"] = jwtToken;
+  if (user && user !== "undefined") {
+    try {
+      const jwtToken = JSON.parse(user);
+      // Send as Authorization header for Cognito
+      headers["Authorization"] = `Bearer ${jwtToken}`;
+      // Also keep x-access-token for backward compatibility
+      headers["x-access-token"] = jwtToken;
+    } catch (e) {
+      console.error("Error parsing user token:", e);
+    }
   }
 
   return headers;
